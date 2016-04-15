@@ -1,0 +1,13 @@
+body {
+    min-height: 2000px;
+    padding-top: 70px;
+}
+
+.thumb{
+    margin-bottom: 30px;
+}
+
+.thumb img{
+    min-height: 200px;
+    height: 200px;
+}
