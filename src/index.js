@@ -21,7 +21,14 @@ class App extends React.Component{
 	}
 }
 
+let {EventEmitter} = require('fbemitter');
+window.emitter = new EventEmitter();
+
+
 let Header = React.createClass({
+	__sltSortByChange(e){
+		window.emitter.emit('changeSortBy', e.target.value);
+	},
 	render(){
 		return (
 			<nav className="navbar navbar-default navbar-fixed-top">
@@ -41,6 +48,17 @@ let Header = React.createClass({
 							<li><a href="#about">About</a></li>
 							<li><a href="#contact">Contact</a></li>
 						</ul>
+						<form className="navbar-form navbar-right">
+							<div className="form-group">
+								<label htmlFor="sltSortBy">Sort:&nbsp;</label>
+								<select name="sltSortBy" id="sltSortBy" className="form-control" onChange={this.__sltSortByChange}>
+									<option value="SoldHighestFirst">Sold : highest first</option>
+									<option value="SoldLowestFirst">Sold : lowest first</option>
+									<option value="PriceHighestFirst">Price : highest first</option>
+									<option value="PriceLowestFirst">Price : lowest first</option>
+								</select>
+							</div>
+						</form>
 					</div>
 				</div>
 			</nav>
