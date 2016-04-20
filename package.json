@@ -93,8 +93,6 @@
     "image-webpack-loader": "^1.7.0",
     "jquery": "^2.2.3",
     "lodash": "^4.11.1",
-    "lowdb": "^0.12.5",
-    "nedb": "^1.8.0",
     "react-materialize": "^0.14.3",
     "react-router": "^2.2.2",
     "reactfire": "^0.6.0",

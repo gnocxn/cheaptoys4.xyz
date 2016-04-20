@@ -2,12 +2,6 @@ import React from 'react';
 import Firebase from 'firebase';
 import _ from 'lodash';
 
-const low = require('lowdb')
-const storage = require('lowdb/browser')
-
-const db = low('db', {storage});
-
-
 const firebaseRef = new Firebase('https://aliexpress.firebaseio.com/sites/cheaptoys4yz/products');
 const watting = require('../waiting.gif');
 
@@ -16,6 +10,7 @@ export default class Home extends React.Component {
 		super(props);
 		this.state = {
 			products: [],
+			_products : [],
 			filter : {},
 			sortBy : 'SoldHighestFirst',
 			isLoaded: false
@@ -26,9 +21,18 @@ export default class Home extends React.Component {
 
 	componentWillMount() {
 		let self = this;
+		firebaseRef.on('value', function (dataSnapshot) {
+			let data = dataSnapshot.val();
+			let products = _.values(data);
+			self.setState({
+				_products : products
+			},function(){
+				self.__queryProducts();
+			})
+		})
 		//db('products').remove({});
-		let productsCount = db('products').chain().filter({}).size().value();
-		if(productsCount > 0) {
+		//let productsCount = db('products').chain().filter({}).size().value();
+		/*if(productsCount > 0) {
 			self.__queryProducts();
 			setTimeout(function(){
 				firebaseRef.once('value', function (dataSnapshot) {
@@ -67,7 +71,7 @@ export default class Home extends React.Component {
 				});
 				self.__queryProducts();
 			});
-		}
+		}*/
 	}
 
 	componentDidMount() {
@@ -92,33 +96,33 @@ export default class Home extends React.Component {
 	}
 
 	__queryProducts(){
-		this.setState({isLoaded : false, products : null});
-		let products = null;
+		this.setState({isLoaded : false});
+		let products = this.state._products;
 		let filter = this.state.filter;
 		let sortBy = this.state.sortBy;
 		switch (sortBy) {
 			case 'SoldHighestFirst':
-				products = db('products').chain().filter(filter).sortBy((p)=> {
+				products = _.chain(products).filter(filter).sortBy((p)=> {
 					return p.volume
 				}).reverse().value();
 				break;
 			case 'SoldLowestFirst':
-				products = db('products').chain().filter(filter).sortBy((p)=> {
+				products = _.chain(products).filter(filter).sortBy((p)=> {
 					return p.volume
 				}).value();
 				break;
 			case 'PriceHighestFirst':
-				products = db('products').chain().filter(filter).sortBy((p)=> {
+				products = _.chain(products).filter(filter).sortBy((p)=> {
 					return p._salePrice
 				}).reverse().value();
 				break;
 			case 'PriceLowestFirst':
-				products = db('products').chain().filter(filter).sortBy((p)=> {
+				products = _.chain(products).filter(filter).sortBy((p)=> {
 					return p._salePrice
 				}).value();
 				break;
 			default :
-				products = db('products').chain().filter(filter).value()
+				products = _.chain(products).filter(filter).value()
 				break;
 		}
 		this.setState({isLoaded : true, products : products});
