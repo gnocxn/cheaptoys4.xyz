@@ -44,9 +44,7 @@ let Header = React.createClass({
 					</div>
 					<div id="navbar" className="navbar-collapse collapse">
 						<ul className="nav navbar-nav">
-							<li className="active"><a href="#">Home</a></li>
-							<li><a href="#about">About</a></li>
-							<li><a href="#contact">Contact</a></li>
+							<li className="active"><a href="/">Home</a></li>
 						</ul>
 						<form className="navbar-form navbar-right">
 							<div className="form-group">

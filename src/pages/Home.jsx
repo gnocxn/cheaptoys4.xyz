@@ -121,7 +121,7 @@ export default class Home extends React.Component {
 			return <div className="row">
 				{products.map((product)=> {
 					return <div className="col-lg-3 col-md-4 col-xs-6 thumb" key={product.productId}>
-						<a href={`${product.productUrl}`} target="_blank"
+						<a href={`${product.promotionUrl}`} target="_blank"
 						   className="thumbnail" data-url={product.productUrl} onClick={this.__productClick}>
 							<ImageProduct id={product.productId} alt={product.productTitle} src={product.imageUrl}/>
 						</a>
