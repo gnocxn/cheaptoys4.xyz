@@ -27,23 +27,47 @@ export default class Home extends React.Component {
 	componentWillMount() {
 		let self = this;
 		//db('products').remove({});
-		firebaseRef.once('value', function (dataSnapshot) {
-			let data = dataSnapshot.val();
-			let products = _.values(data);
-			_.each(products, (p)=> {
-				let isExists = db('products').chain().some({productId : p.productId}).value();
-				if(isExists){
-					db('products')
-						.chain()
-						.find({productId : p.productId})
-						.assign(p)
-						.value();
-				}else{
-					db('products').push(p);
-				}
-			});
+		let productsCount = db('products').chain().filter({}).size().value();
+		if(productsCount > 0) {
 			self.__queryProducts();
-		});
+			setTimeout(function(){
+				firebaseRef.once('value', function (dataSnapshot) {
+					let data = dataSnapshot.val();
+					let products = _.values(data);
+					_.each(products, (p)=> {
+						let isExists = db('products').chain().some({productId : p.productId}).value();
+						if(isExists){
+							db('products')
+								.chain()
+								.find({productId : p.productId})
+								.assign(p)
+								.value();
+						}else{
+							db('products').push(p);
+						}
+					});
+					self.__queryProducts();
+				});
+			},5000)
+		}else{
+			firebaseRef.once('value', function (dataSnapshot) {
+				let data = dataSnapshot.val();
+				let products = _.values(data);
+				_.each(products, (p)=> {
+					let isExists = db('products').chain().some({productId : p.productId}).value();
+					if(isExists){
+						db('products')
+							.chain()
+							.find({productId : p.productId})
+							.assign(p)
+							.value();
+					}else{
+						db('products').push(p);
+					}
+				});
+				self.__queryProducts();
+			});
+		}
 	}
 
 	componentDidMount() {
