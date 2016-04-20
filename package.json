@@ -1,13 +1,14 @@
 {
-  "name": "react-transform-boilerplate",
+  "name": "Cheaptoys4.xyz",
   "version": "1.0.0",
-  "description": "A new Webpack boilerplate with hot reloading React components, and error handling on module and component level.",
+  "description": "Spice up your sex life with a cheap sex toy today.",
   "scripts": {
     "clean": "rimraf dist",
     "build:webpack": "cross-env NODE_ENV=production webpack --config webpack.config.prod.js",
     "build": "npm run clean && npm run build:webpack",
     "start": "node devServer.js",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "postinstall" : "npm run build"
   },
   "repository": {
     "type": "git",
@@ -68,6 +69,7 @@
   "dependencies": {
     "bootstrap": "^3.3.6",
     "react": "^0.14.7",
-    "react-dom": "^0.14.7"
+    "react-dom": "^0.14.7",
+    "express": "^4.13.3"
   }
 }

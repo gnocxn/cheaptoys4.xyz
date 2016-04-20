@@ -60,41 +60,6 @@ export default class Home extends React.Component {
 			});
 		});
 
-		/*window.emitter.addListener('sortBy', (sort) => {
-			let filter = self.state.filter;
-			let products = db('products').filter(filter);
-			self.setState({
-				isLoaded: false
-			})
-			switch (sort) {
-				case 'SoldHighestFirst':
-					products = _.chain(products).sortBy((p)=> {
-						return p.volume
-					}).reverse().value();
-					break;
-				case 'SoldLowestFirst':
-					products = _.chain(products).sortBy((p)=> {
-						return p.volume
-					}).value();
-					break;
-				case 'PriceHighestFirst':
-					products = _.chain(products).sortBy((p)=> {
-						return p._salePrice
-					}).reverse().value();
-					break;
-				case 'PriceLowestFirst':
-					products = _.chain(products).sortBy((p)=> {
-						return p._salePrice
-					}).value();
-					break;
-			}
-
-			self.setState({
-				products: products,
-				isLoaded: true
-			});
-		});*/
-
 		mixpanel.track("App view");
 	}
 
@@ -138,6 +103,9 @@ export default class Home extends React.Component {
 	__productClick(e) {
 		let p = e.target.parentNode;
 		let productUrl = p.getAttribute('data-url') || p.getAttribute('href');
+		if(ga){
+			ga('send', 'event', 'Products', 'Click', productUrl);
+		}
 		if (mixpanel) {
 			mixpanel.track("Click Product", {
 				product: productUrl
@@ -153,7 +121,7 @@ export default class Home extends React.Component {
 			return <div className="row">
 				{products.map((product)=> {
 					return <div className="col-lg-3 col-md-4 col-xs-6 thumb" key={product.productId}>
-						<a href={`/item/${product.productId}?out=${product.productUrl}`} target="_blank"
+						<a href={`${product.productUrl}`} target="_blank"
 						   className="thumbnail" data-url={product.productUrl} onClick={this.__productClick}>
 							<ImageProduct id={product.productId} alt={product.productTitle} src={product.imageUrl}/>
 						</a>
